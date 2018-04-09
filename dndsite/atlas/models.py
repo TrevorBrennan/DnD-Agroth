@@ -6,22 +6,42 @@ from django.utils import timezone
 # Create your models here.
 
 
-class Question(models.Model):
-    question_text = models.CharField(max_length=200)
-    pub_date = models.DateTimeField('date published')
+class Detail(models.Model):
+    detail_text = models.TextField()
+    order = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.question_text
+        if len(self.detail_text) > 20:
+            return "{}...".format(self.detail_text[:17])
+        else:
+            return self.detail_text
 
-    def was_published_recently(self):
-        now = timezone.now()
-        return now - datetime.timedelta(days=1) <= self.pub_date <= now
 
-
-class Choice(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    choice_text = models.CharField(max_length=200)
-    votes = models.IntegerField(default=0)
+class LocationType(models.Model):
+    name = models.CharField(max_length=256)
+    details = models.ManyToManyField(Detail,
+                                     blank=True)
 
     def __str__(self):
-        return self.choice_text
+        return self.name
+
+
+class Location(models.Model):
+    name = models.CharField(max_length=256)
+    type = models.ForeignKey(LocationType,
+                             on_delete=models.SET_NULL,
+                             blank=True,
+                             null=True)
+    parent = models.ForeignKey('self',
+                               on_delete=models.SET_NULL,
+                               related_name='children',
+                               blank=True,
+                               null=True)
+    details = models.ManyToManyField(Detail,
+                                     blank=True)
+
+    def __str__(self):
+        return self.name
+
+
+
