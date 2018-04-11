@@ -32,8 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'polls.apps.PollsConfig',
-
-
+    'details.apps.DetailsConfig',
     'atlas.apps.AtlasConfig',
     'django.contrib.admin',
     'django.contrib.auth',

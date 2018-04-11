@@ -1,26 +1,15 @@
 import datetime
 
+from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django.utils import timezone
 
-# Create your models here.
-
-
-class Detail(models.Model):
-    detail_text = models.TextField()
-    order = models.IntegerField(default=0)
-
-    def __str__(self):
-        if len(self.detail_text) > 20:
-            return "{}...".format(self.detail_text[:17])
-        else:
-            return self.detail_text
+from details.models import Detail
 
 
 class LocationType(models.Model):
     name = models.CharField(max_length=256)
-    details = models.ManyToManyField(Detail,
-                                     blank=True)
+    details = GenericRelation(Detail, related_query_name='location_types')
 
     def __str__(self):
         return self.name
@@ -37,11 +26,10 @@ class Location(models.Model):
                                related_name='children',
                                blank=True,
                                null=True)
-    details = models.ManyToManyField(Detail,
-                                     blank=True)
+    details = GenericRelation(Detail, related_query_name='locations')
 
     def __str__(self):
-        return self.name
+        return "{}, {}".format(self.name, self.type)
 
 
 

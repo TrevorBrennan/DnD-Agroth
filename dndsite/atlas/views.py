@@ -23,3 +23,14 @@ class IndexView(generic.ListView):
 class LocationDetailView(generic.DetailView):
     model = Location
     template_name = 'atlas/detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        parents = []
+        parent = context['location'].parent
+        while parent is not None:
+            parents.append(parent)
+            parent = parent.parent
+        if len(parents) > 0:
+            context['parents'] = parents
+        return context

@@ -1,3 +1,55 @@
 <h1>{{ location.name }}</h1>
-<h2>{{ location.type }}</h2>
+<h2>Type: {{ location.type }}</h2>
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<h2>Parents</h2>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+    </tr>
+{% for parent in parents %}
+    <tr>
+        <td><a href="{% url 'atlas:location_detail' parent.id %}">{{ parent.name }}</a></td>
+        <td>{{ parent.type }}</td>
+    </tr>
+{% empty %}
+    <tr>
+        <td></td>
+        <td></td>
+    </tr>
+{% endfor %}
+</table>
+
+
+<h2>Children</h2>
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+    </tr>
+{% for child in location.children.all %}
+    <tr>
+        <td><a href="{% url 'atlas:location_detail' child.id %}">{{ child.name }}</a></td>
+        <td>{{ child.type }}</td>
+    </tr>
+{% empty %}
+    <tr>
+        <td></td>
+        <td></td>
+    </tr>
+{% endfor %}
+</table>
+
+<h2>Details</h2>
+{% for detail in location.details.get_queryset %}
+<p>{{ detail.detail_text }}</p>
+{% endfor %}
+
+<style>
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+</style>
