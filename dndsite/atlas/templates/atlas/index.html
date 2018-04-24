@@ -1,3 +1,13 @@
+{% extends "dndsite/base.html" %}
+
+{% block title %}
+Atlas
+{% endblock %}
+
+{% block content %}
+
+<h1>Atlas Home</h1>
+<lead>Select any of the top level locations to begin exploring the multiverse.</lead>
 <ul>
 {% for location in location_list %}
 <li><a href="{% url 'atlas:location_detail' location.id %}">{{ location }}</a></li>
@@ -5,3 +15,5 @@
     <p>The multiverse seems to be missing...</p>
 {% endfor %}
 </ul>
+
+{% endblock %}
