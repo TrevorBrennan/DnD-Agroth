@@ -23,7 +23,7 @@
                 </tr>
             </thead>
             <tbody>
-            {% for parent in parents %}
+            {% for parent in parents reversed %}
                 <tr>
                     <td><a href="{% url 'atlas:location_detail' parent.id %}">{{ parent.name }}</a></td>
                     <td>{{ parent.type }}</td>
