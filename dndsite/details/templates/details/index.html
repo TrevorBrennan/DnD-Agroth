@@ -1,1 +1,19 @@
- <p>Insert Random Detail?</p>
+{% extends "dndsite/base.html" %}
+
+{% block title %}
+Sources
+{% endblock %}
+
+{% block content %}
+
+<h1>Sources Home</h1>
+<lead>Select any of the available sources to begin learning.</lead>
+<ul>
+{% for source in source_list %}
+<li><a href="{% url 'details:source_detail' source.id %}">{{ source }}</a></li>
+{% empty %}
+    <p>The sources seem to be missing...</p>
+{% endfor %}
+</ul>
+
+{% endblock %}

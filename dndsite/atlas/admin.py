@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from .models import Location, LocationType
-from details.admin import DetailInline
+from details.admin import GenericDetailInline
 
 
 class LocationAdmin(admin.ModelAdmin):
@@ -9,14 +9,14 @@ class LocationAdmin(admin.ModelAdmin):
     fields = ['name', 'type', 'parent']
     list_display = ('name', 'type')
 
-    inlines = [DetailInline]
+    inlines = [GenericDetailInline]
 
 
 class LocationTypeAdmin(admin.ModelAdmin):
     model = LocationType
     fields = ['name']
 
-    inlines = [DetailInline]
+    inlines = [GenericDetailInline]
 
 
 admin.site.register(Location, LocationAdmin)

@@ -1,0 +1,17 @@
+{% extends "dndsite/base.html" %}
+
+{% block title %}
+{{ source.name }}
+{% endblock %}
+
+{% block content %}
+
+<h1>{{ source.name }}</h1>
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<h3>Details</h3>
+{% for detail in source.details.get_queryset %}
+    {% include 'details/detail.html' %}
+{% endfor %}
+
+{% endblock %}
