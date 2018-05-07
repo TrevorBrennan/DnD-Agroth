@@ -26,6 +26,11 @@ class LocationDetailView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        self.set_parents(context)
+        self.set_details(context)
+        return context
+
+    def set_parents(self, context):
         parents = []
         parent = context['location'].parent
         while parent is not None:
@@ -33,4 +38,10 @@ class LocationDetailView(generic.DetailView):
             parent = parent.parent
         if len(parents) > 0:
             context['parents'] = parents
-        return context
+
+    def set_details(self, context):
+        details = []
+        tags = context['location'].tags.all()
+        for tag in tags:
+            details.extend(tag.details.all())
+        context['details'] = details

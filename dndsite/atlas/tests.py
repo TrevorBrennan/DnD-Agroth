@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.test import TestCase
 
-from .models import Detail
+from .models import Tag
 
 
 class LocationModelTests(TestCase):
@@ -15,5 +15,5 @@ class LocationModelTests(TestCase):
         characters in them.
         """
         detail_text = "string length of 19"
-        detail = Detail(detail_text=detail_text)
+        detail = Tag(detail_text=detail_text)
         self.assertIs(detail.__str__(), detail_text)

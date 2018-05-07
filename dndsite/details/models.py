@@ -10,14 +10,23 @@ class Source(models.Model):
         return self.name
 
 
-class Detail(models.Model):
+class Tag(models.Model):
     detail_text = models.TextField()
-    source = models.ForeignKey(Source, on_delete=models.CASCADE, related_name='details', null=True)
+    source = models.ForeignKey(Source, on_delete=models.CASCADE, related_name='tags', null=True)
     order = models.PositiveIntegerField(default=0)
 
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
+
+    def __str__(self):
+        return self.content_object.__str__()
+
+
+class Detail(models.Model):
+    detail_text = models.TextField()
+    tags = models.ManyToManyField(Tag, related_name='details')
+    source = models.ForeignKey(Source, on_delete=models.CASCADE, related_name='details', null=True)
 
     def __str__(self):
         if len(self.detail_text) > 20:

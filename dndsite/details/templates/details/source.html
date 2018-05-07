@@ -10,7 +10,7 @@
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
 <h3>Details</h3>
-{% for detail in source.details.get_queryset %}
+{% for detail in source.details.all %}
     {% include 'details/detail.html' %}
 {% endfor %}
 
