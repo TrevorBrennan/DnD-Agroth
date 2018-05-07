@@ -1,9 +1,12 @@
 <div class="card">
     <div class="card-body">
-        <p>{{ detail.detail_text }}</p>
-        <a class="" data-toggle="collapse" href="#DetailMeta{{ detail.pk }}" aria-expanded="false" aria-controls="DetailMeta{{ detail.pk }}">
-            <i class="fas fa-angle-down"></i>
-        </a>
+        <p>
+            <a class="" data-toggle="collapse" href="#DetailMeta{{ detail.pk }}" aria-expanded="false" aria-controls="DetailMeta{{ detail.pk }}">
+                <i class="fas fa-angle-down"></i>
+            </a>
+            {{ detail.detail_text }}
+        </p>
+
     </div>
     <div class="collapse" id="DetailMeta{{ detail.pk }}">
         <div class="card-footer">
