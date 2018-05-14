@@ -4,6 +4,8 @@ from django.urls import reverse
 from django.utils import timezone
 from django.views import generic
 
+from collections import defaultdict
+
 from .models import Location
 
 
@@ -41,7 +43,16 @@ class LocationDetailView(generic.DetailView):
 
     def set_details(self, context):
         details = []
+        sources = defaultdict(list)
+        detail_collections = []
         tags = context['location'].tags.all()
         for tag in tags:
             details.extend(tag.details.all())
-        context['details'] = details
+        for detail in details:
+            sources[detail.source.name].append(detail)
+        for source in sorted(sources.keys()):
+            detail_collections.append({'name': source,
+                                       'label': sources[source][0].pk,
+                                       'details': sources[source]})
+
+        context['detail_collections'] = detail_collections

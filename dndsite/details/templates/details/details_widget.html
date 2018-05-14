@@ -1,0 +1,18 @@
+<div id="details_accordion">
+    {% for collection in detail_collections %}
+    <div class="card">
+        <div class="card-header" id="{{ collection.label }}" >
+            <h5 class="mb-0">
+               <button class="btn btn-link" data-toggle="collapse" data-target="#collapse{{ collection.label }}" aria-expanded="false" aria-controls="#collapse{{ collection.label }}">
+                   {{ collection.name }}
+               </button>
+            </h5>
+        </div>
+        <div id="collapse{{ collection.label }}" class="collapse" aria-labelledby="{{ collection.label }}" data-parent="#details_accordion">
+            {% for detail in collection.details %}
+                {% include 'details/detail.html' %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div>

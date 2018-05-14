@@ -1,25 +1,22 @@
-<div class="card">
-    <div class="card-body">
-        <p>
-            <a class="" data-toggle="collapse" href="#DetailMeta{{ detail.pk }}" aria-expanded="false" aria-controls="DetailMeta{{ detail.pk }}">
-                <i class="fas fa-angle-down"></i>
-            </a>
-            {{ detail.detail_text }}
-        </p>
-
-    </div>
-    <div class="collapse" id="DetailMeta{{ detail.pk }}">
-        <div class="card-footer">
-            <div class="row">
-                <div class="col-7">
-                    Source={{ detail.source }}
-                </div>
-                <div class="col-2">
-                    pk={{ detail.pk }}
-                </div>
-                <div class="col-3">
-                    order={{ detail.order }}
-                </div>
+<div class="card-body">
+    <p>
+        <a class="" data-toggle="collapse" href="#DetailMeta{{ detail.pk }}" aria-expanded="false" aria-controls="DetailMeta{{ detail.pk }}">
+            <i class="fas fa-angle-down"></i>
+        </a>
+        {{ detail.detail_text }}
+    </p>
+</div>
+<div class="collapse" id="DetailMeta{{ detail.pk }}">
+    <div class="card-footer">
+        <div class="row">
+            <div class="col-7">
+                Source=<a href="{% url 'details:source_detail' detail.source.id %}">{{ detail.source }}</a>
+            </div>
+            <div class="col-2">
+                pk={{ detail.pk }}
+            </div>
+            <div class="col-3">
+                order={{ detail.order }}
             </div>
         </div>
     </div>
