@@ -10,14 +10,21 @@
     <div class="card-footer">
         <div class="row">
             <div class="col-7">
-                Source=<a href="{% url 'details:source_detail' detail.source.id %}">{{ detail.source }}</a>
+                Source:<a href="{% url 'details:source_detail' detail.source.id %}">{{ detail.source }}</a>
             </div>
             <div class="col-2">
-                pk={{ detail.pk }}
-            </div>
-            <div class="col-3">
-                order={{ detail.order }}
+                pk:{{ detail.pk }}
             </div>
         </div>
+        {% for tag in detail.tags.all %}
+        <div class="row">
+            <div class="col-12">
+                Tags:
+                {% for tag in detail.tags.all %}
+                    {% include 'details/tag_widget.html' %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
     </div>
 </div>

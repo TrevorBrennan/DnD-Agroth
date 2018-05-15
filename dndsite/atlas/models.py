@@ -2,6 +2,7 @@ import datetime
 
 from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 
 from details.models import Tag
@@ -13,6 +14,12 @@ class LocationType(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        """
+        Returns the url to access a particular instance of the model.
+        """
+        return reverse('atlas:location_type_detail', kwargs={'pk': self.id})
 
 
 class Location(models.Model):
@@ -31,5 +38,10 @@ class Location(models.Model):
     def __str__(self):
         return "{}, {}".format(self.name, self.type)
 
+    def get_absolute_url(self):
+        """
+        Returns the url to access a particular instance of the model.
+        """
+        return reverse('atlas:location_detail', kwargs={'pk': self.id})
 
 

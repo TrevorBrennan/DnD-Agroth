@@ -6,7 +6,7 @@ from django.views import generic
 
 from collections import defaultdict
 
-from .models import Location
+from .models import Location, LocationType
 
 
 class IndexView(generic.ListView):
@@ -56,3 +56,8 @@ class LocationDetailView(generic.DetailView):
                                        'details': sources[source]})
 
         context['detail_collections'] = detail_collections
+
+
+class LocationTypeDetailView(generic.DetailView):
+    model = LocationType
+    template_name = 'atlas/location_type_detail.html'
