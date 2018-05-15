@@ -1,0 +1,19 @@
+{% extends "dndsite/base.html" %}
+
+{% block title %}
+Atlas - Legend
+{% endblock %}
+
+{% block content %}
+
+<h1>Legend</h1>
+<lead>The different kinds of places you might encounter while exploring the multiverse.</lead>
+<ul>
+{% for location_type in location_types %}
+<li><a href="{% url 'atlas:location_type_detail' location_type.id %}">{{ location_type }}</a></li>
+{% empty %}
+    <p>The multiverse seems to be missing...</p>
+{% endfor %}
+</ul>
+
+{% endblock %}

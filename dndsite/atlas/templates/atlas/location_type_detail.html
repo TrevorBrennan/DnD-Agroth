@@ -5,5 +5,7 @@
 {% endblock %}
 
 {% block content %}
-<p>Available Later</p>
+<h1>{{ location_type.name }}</h1>
+<h3>Details</h3>
+    {% include 'details/details_widget.html' %}
 {% endblock %}

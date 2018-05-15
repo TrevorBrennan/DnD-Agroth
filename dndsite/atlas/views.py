@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.views import generic
 
-from collections import defaultdict
+from details.views import DetailHelpers
 
 from .models import Location, LocationType
 
@@ -20,6 +20,17 @@ class IndexView(generic.ListView):
         return Location.objects.filter(
             parent=None
         )
+
+
+class LocationTypeIndexView(generic.ListView):
+    template_name = 'atlas/legend.html'
+    context_object_name = 'location_types'
+
+    def get_queryset(self):
+        """
+        Return a list of locations without parents
+        """
+        return LocationType.objects.all()
 
 
 class LocationDetailView(generic.DetailView):
@@ -42,22 +53,23 @@ class LocationDetailView(generic.DetailView):
             context['parents'] = parents
 
     def set_details(self, context):
-        details = []
-        sources = defaultdict(list)
-        detail_collections = []
         tags = context['location'].tags.all()
-        for tag in tags:
-            details.extend(tag.details.all())
-        for detail in details:
-            sources[detail.source.name].append(detail)
-        for source in sorted(sources.keys()):
-            detail_collections.append({'name': source,
-                                       'label': sources[source][0].pk,
-                                       'details': sources[source]})
-
-        context['detail_collections'] = detail_collections
+        DetailHelpers.set_detail_collections(context, tags)
 
 
 class LocationTypeDetailView(generic.DetailView):
     model = LocationType
     template_name = 'atlas/location_type_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        self.set_location_type(context)
+        self.set_details(context)
+        return context
+
+    def set_location_type(self, context):
+        context['location_type'] = context['locationtype']
+
+    def set_details(self, context):
+        tags = context['location_type'].tags.all()
+        DetailHelpers.set_detail_collections(context, tags)

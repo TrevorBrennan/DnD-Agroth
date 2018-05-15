@@ -4,6 +4,8 @@ from django.urls import reverse
 from django.utils import timezone
 from django.views import generic
 
+from collections import defaultdict
+
 from .models import Source
 
 
@@ -22,3 +24,22 @@ class IndexView(generic.ListView):
 class SourceDetailView(generic.DetailView):
     model = Source
     template_name = 'details/source.html'
+
+
+class DetailHelpers:
+
+    @staticmethod
+    def set_detail_collections(context, tags):
+        details = []
+        sources = defaultdict(list)
+        detail_collections = []
+        for tag in tags:
+            details.extend(tag.details.all())
+        for detail in details:
+            sources[detail.source.name].append(detail)
+        for source in sorted(sources.keys()):
+            detail_collections.append({'name': source,
+                                       'label': sources[source][0].pk,
+                                       'details': sources[source]})
+
+        context['detail_collections'] = detail_collections

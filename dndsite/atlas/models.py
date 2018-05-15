@@ -10,7 +10,7 @@ from details.models import Tag
 
 class LocationType(models.Model):
     name = models.CharField(max_length=256)
-    details = GenericRelation(Tag, related_query_name='location_types')
+    tags = GenericRelation(Tag, related_query_name='location_types')
 
     def __str__(self):
         return self.name
