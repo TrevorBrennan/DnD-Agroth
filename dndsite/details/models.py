@@ -11,9 +11,7 @@ class Source(models.Model):
 
 
 class Tag(models.Model):
-    detail_text = models.TextField()
-    source = models.ForeignKey(Source, on_delete=models.CASCADE, related_name='tags', null=True)
-    order = models.PositiveIntegerField(default=0)
+    pattern = models.CharField(max_length=256, null=True)
 
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
