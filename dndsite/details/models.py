@@ -10,6 +10,14 @@ class Source(models.Model):
         return self.name
 
 
+class Chapter(models.Model):
+    name = models.CharField(max_length=256)
+    source = models.ForeignKey(Source, on_delete=models.CASCADE, related_name='chapters')
+
+    def __str__(self):
+        return self.name
+
+
 class Tag(models.Model):
     pattern = models.CharField(max_length=256, null=True)
 
@@ -25,6 +33,7 @@ class Detail(models.Model):
     detail_text = models.TextField()
     tags = models.ManyToManyField(Tag, related_name='details')
     source = models.ForeignKey(Source, on_delete=models.CASCADE, related_name='details', null=True)
+    chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE, related_name='details', null=True)
 
     def __str__(self):
         if len(self.detail_text) > 20:

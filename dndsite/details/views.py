@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.views import generic
 
 from collections import defaultdict
+from operator import itemgetter
 
 from .models import Source
 
@@ -25,21 +26,53 @@ class SourceDetailView(generic.DetailView):
     model = Source
     template_name = 'details/source.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        self.set_detail_collections(context)
+        return context
+
+    def set_detail_collections(self, context):
+        DetailHelpers.set_detail_collections_from_source(context, context['source'])
+
 
 class DetailHelpers:
 
     @staticmethod
-    def set_detail_collections(context, tags):
+    def set_detail_collections_from_tags(context, tags):
         details = []
-        sources = defaultdict(list)
-        detail_collections = []
         for tag in tags:
             details.extend(tag.details.all())
-        for detail in details:
-            sources[detail.source.name].append(detail)
-        for source in sorted(sources.keys()):
-            detail_collections.append({'name': source,
-                                       'label': sources[source][0].pk,
-                                       'details': sources[source]})
+        DetailHelpers.set_detail_collections(context, details)
 
+    @staticmethod
+    def set_detail_collections_from_source(context, source):
+        details = []
+        details.extend(source.details.all())
+        DetailHelpers.set_detail_collections(context, details)
+        for collection in context['detail_collections']:
+            if collection['chapter'] is not None:
+                collection['name'] = collection['chapter'].name
+            else:
+                collection['name'] = collection['chapter']
+
+    @staticmethod
+    def set_detail_collections(context, details):
+        cards = defaultdict(list)
+        detail_collections = []
+        for detail in details:
+            cards[(detail.source, detail.chapter)].append(detail)
+        for key, value in cards.items():
+            source, chapter = key
+            if chapter is None:
+                label = "{}".format(source.pk)
+                name = "{}".format(source)
+            else:
+                label = "{}_{}".format(source.pk, chapter.pk)
+                name = "{} - {}".format(source, chapter)
+            detail_collections.append({'source': source,
+                                       'chapter': chapter,
+                                       'name': name,
+                                       'label': label,
+                                       'details': value})
+        detail_collections = sorted(detail_collections, key=itemgetter('name'))
         context['detail_collections'] = detail_collections

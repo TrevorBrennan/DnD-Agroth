@@ -9,14 +9,16 @@
 <div class="collapse" id="DetailMeta{{ detail.pk }}">
     <div class="card-footer">
         <div class="row">
-            <div class="col-7">
+            <div class="col-5">
                 Source:<a href="{% url 'details:source_detail' detail.source.id %}">{{ detail.source }}</a>
+            </div>
+            <div class="col-5">
+                Chapter: {{ detail.chapter }}
             </div>
             <div class="col-2">
                 pk:{{ detail.pk }}
             </div>
         </div>
-        {% for tag in detail.tags.all %}
         <div class="row">
             <div class="col-12">
                 Tags:
@@ -25,6 +27,5 @@
                 {% endfor %}
             </div>
         </div>
-        {% endfor %}
     </div>
 </div>

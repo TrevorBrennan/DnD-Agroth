@@ -54,7 +54,7 @@ class LocationDetailView(generic.DetailView):
 
     def set_details(self, context):
         tags = context['location'].tags.all()
-        DetailHelpers.set_detail_collections(context, tags)
+        DetailHelpers.set_detail_collections_from_tags(context, tags)
 
 
 class LocationTypeDetailView(generic.DetailView):
@@ -72,4 +72,4 @@ class LocationTypeDetailView(generic.DetailView):
 
     def set_details(self, context):
         tags = context['location_type'].tags.all()
-        DetailHelpers.set_detail_collections(context, tags)
+        DetailHelpers.set_detail_collections_from_tags(context, tags)
