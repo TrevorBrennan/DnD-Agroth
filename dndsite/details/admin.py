@@ -6,12 +6,12 @@ from .models import Chapter, Detail, Source, Tag
 
 class ChapterAdmin(admin.ModelAdmin):
     model = Chapter
-    fields = ['name', 'source']
+    fields = ['name', 'source', 'permissions']
 
 
 class DetailAdmin(admin.ModelAdmin):
     model = Tag
-    fields = ['detail_text', 'source', 'chapter', 'tags']
+    fields = ['detail_text', 'source', 'chapter', 'tags', 'permissions']
 
 
 class DetailInline(admin.TabularInline):
@@ -26,7 +26,7 @@ class DetailTagInline(admin.TabularInline):
 
 class SourceAdmin(admin.ModelAdmin):
     model = Source
-    fields = ['name']
+    fields = ['name', 'permissions']
 
     inlines = [DetailInline]
 
