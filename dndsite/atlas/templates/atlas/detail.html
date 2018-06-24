@@ -54,7 +54,7 @@
                 </tr>
             </thead>
             <tbody>
-            {% for child in location.children.all %}
+            {% for child in location.children.all|dictsort:"name" %}
                 <tr>
                     <td><a href="{% url 'atlas:location_detail' child.id %}">{{ child.name }}</a></td>
                     <td><a href="{{ child.type.get_absolute_url }}">{{ child.type }}</a></td>
