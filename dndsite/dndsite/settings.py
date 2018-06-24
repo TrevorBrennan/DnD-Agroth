@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 MY_INSTALLED_APPS = [
+    'authorization.apps.AuthorizationConfig',
     'polls.apps.PollsConfig',
     'details.apps.DetailsConfig',
     'atlas.apps.AtlasConfig',
