@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 class PlayerCharacter(models.Model):
 
     name = models.CharField(max_length=256)
-    player = models.ForeignKey(User, on_delete=models.CASCADE, related_name='characters', null=True)
+    player = models.ForeignKey(User, on_delete=models.CASCADE, related_name='characters', null=True, blank=True)
     is_gm = models.BooleanField(default=False)
 
     def __str__(self):
