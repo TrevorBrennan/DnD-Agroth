@@ -1,0 +1,16 @@
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        {% if request.session.character == None %}
+            Guest
+        {% else %}
+            {{ request.session.character }}
+        {% endif %}
+    </a>
+    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        {% for character in user.characters.all %}
+            <a class="dropdown-item" href="{% url 'authorization:set_character' character.pk %}">{{ character }}</a>
+        {% empty %}
+            <a class="dropdown-item disabled" href="#">Guest</a>
+        {% endfor %}
+    </div>
+</li>

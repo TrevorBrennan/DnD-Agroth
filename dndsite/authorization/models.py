@@ -26,3 +26,16 @@ class Permissions(models.Model):
         for character in self.authorized_characters.all():
             output = "{}, {}".format(output, character.name)
         return output
+
+    def request_has_permissions(self, request):
+        name = request.session.get('character', 'Guest')
+        try:
+            character = PlayerCharacter.objects.get(name=name)
+        except PlayerCharacter.DoesNotExist:
+            return False
+        if character.is_gm:
+            return True
+        elif not self.gm_only and character in self.authorized_characters.all():
+            return True
+        else:
+            return False

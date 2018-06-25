@@ -32,23 +32,23 @@ class SourceDetailView(generic.DetailView):
         return context
 
     def set_detail_collections(self, context):
-        DetailHelpers.set_detail_collections_from_source(context, context['source'])
+        DetailHelpers.set_detail_collections_from_source(self.request, context, context['source'])
 
 
 class DetailHelpers:
 
     @staticmethod
-    def set_detail_collections_from_tags(context, tags):
+    def set_detail_collections_from_tags(request, context, tags):
         details = []
         for tag in tags:
             details.extend(tag.details.all())
-        DetailHelpers.set_detail_collections(context, details)
+        DetailHelpers.set_detail_collections(request, context, details)
 
     @staticmethod
-    def set_detail_collections_from_source(context, source):
+    def set_detail_collections_from_source(request, context, source):
         details = []
         details.extend(source.details.all())
-        DetailHelpers.set_detail_collections(context, details)
+        DetailHelpers.set_detail_collections(request, context, details)
         for collection in context['detail_collections']:
             if collection['chapter'] is not None:
                 collection['name'] = collection['chapter'].name
@@ -56,11 +56,14 @@ class DetailHelpers:
                 collection['name'] = collection['chapter']
 
     @staticmethod
-    def set_detail_collections(context, details):
+    def set_detail_collections(request, context, details):
         cards = defaultdict(list)
         detail_collections = []
         for detail in details:
-            cards[(detail.source, detail.chapter)].append(detail)
+            if detail.source is None or detail.source.permissions.request_has_permissions(request):
+                if detail.chapter is None or detail.chapter.permissions.request_has_permissions(request):
+                    if detail.permissions.request_has_permissions(request):
+                        cards[(detail.source, detail.chapter)].append(detail)
         for key, value in cards.items():
             source, chapter = key
             if chapter is None:

@@ -35,8 +35,8 @@ class Tag(models.Model):
 class Detail(models.Model):
     detail_text = models.TextField()
     tags = models.ManyToManyField(Tag, related_name='details')
-    source = models.ForeignKey(Source, on_delete=models.CASCADE, related_name='details', null=True)
-    chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE, related_name='details', null=True)
+    source = models.ForeignKey(Source, on_delete=models.CASCADE, related_name='details', null=True, blank=True)
+    chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE, related_name='details', null=True, blank=True)
     permissions = models.ForeignKey(Permissions, on_delete=models.CASCADE)
 
     def __str__(self):
