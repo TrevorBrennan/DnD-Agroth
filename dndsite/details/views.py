@@ -19,7 +19,12 @@ class IndexView(generic.ListView):
         """
         Return a list of locations without parents
         """
-        return Source.objects.all()
+        all_sources = Source.objects.all()
+        sources = all_sources
+        for source in all_sources:
+            if not source.permissions.request_has_permissions(self.request):
+                sources = sources.exclude(pk=source.pk)
+        return sources
 
 
 class SourceDetailView(generic.DetailView):
