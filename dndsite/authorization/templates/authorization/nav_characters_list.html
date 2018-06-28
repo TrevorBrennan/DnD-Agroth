@@ -1,0 +1,5 @@
+{% for character in characters %}
+    <a class="dropdown-item" href="{% url 'authorization:set_character' character.pk %}">{{ character.name }}</a>
+{% empty %}
+    <a class="dropdown-item disabled" href="#">Guest</a>
+{% endfor %}

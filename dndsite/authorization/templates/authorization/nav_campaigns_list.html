@@ -1,0 +1,5 @@
+{% for campaign in campaigns %}
+    <a class="dropdown-item" href="{% url 'authorization:set_campaign' campaign.pk %}">{{ campaign }}</a>
+{% empty %}
+    <a class="dropdown-item disabled" href="#">Select Campaign</a>
+{% endfor %}

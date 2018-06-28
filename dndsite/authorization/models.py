@@ -8,7 +8,16 @@ class PlayerCharacter(models.Model):
 
     name = models.CharField(max_length=256)
     player = models.ForeignKey(User, on_delete=models.CASCADE, related_name='characters', null=True, blank=True)
-    is_gm = models.BooleanField(default=False)
+
+    def __str__(self):
+        return "{} ({})".format(self.name, ", ".join(self.campaigns.values_list('name', flat=True)))
+
+
+class Campaign(models.Model):
+    name = models.CharField(max_length=256)
+    gm = models.ForeignKey(PlayerCharacter, on_delete=models.CASCADE, related_name='campaigns_as_gm', null=True,
+                           blank=True)
+    players = models.ManyToManyField(PlayerCharacter, related_name='campaigns')
 
     def __str__(self):
         return self.name
@@ -17,23 +26,39 @@ class PlayerCharacter(models.Model):
 class Permissions(models.Model):
 
     gm_only = models.BooleanField(default=True)
-    authorized_characters = models.ManyToManyField(PlayerCharacter)
+    authorized_characters = models.ManyToManyField(PlayerCharacter, blank=True)
+    campaigns = models.ManyToManyField(Campaign, blank=True)
 
     def __str__(self):
-        output = ""
+        output = "[{}], [{}]".format(", ".join(self.campaigns.values_list('name', flat=True)), ", ".join(self.authorized_characters.values_list('name', flat=True)))
         if self.gm_only:
-            output = "GM Only"
-        for character in self.authorized_characters.all():
-            output = "{}, {}".format(output, character.name)
+            output = "(GM Only) {}".format(output)
         return output
 
     def request_has_permissions(self, request):
-        name = request.session.get('character', 'Guest')
+
+        # Get the relevant values from the session
+        character_name = request.session.get('character', 'Guest')
+        campaign_pk = request.session.get('campaign_pk', Campaign())
+
+        # Get the campaign object if the campaign_pk is valid. Otherwise,
+        # return false.
         try:
-            character = PlayerCharacter.objects.get(name=name)
+            campaign = Campaign.objects.get(pk=campaign_pk)
+        except Campaign.DoesNotExist:
+            return False
+
+        if campaign not in self.campaigns.all():
+            return False
+
+        # Get the character object if the character name matches a name of a
+        # character in the campaign. Otherwise, return false.
+        try:
+            character = PlayerCharacter.objects.get(name=character_name, campaigns=campaign)
         except PlayerCharacter.DoesNotExist:
             return False
-        if character.is_gm:
+
+        if campaign.gm == character:
             return True
         elif not self.gm_only and character in self.authorized_characters.all():
             return True
