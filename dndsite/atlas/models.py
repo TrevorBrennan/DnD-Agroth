@@ -6,10 +6,14 @@ from django.urls import reverse
 from django.utils import timezone
 
 from details.models import Tag
+from authorization.models import Permissions
 
 
 class LocationType(models.Model):
     name = models.CharField(max_length=256)
+
+    prime = models.ForeignKey('self', on_delete=models.CASCADE, related_name='redactions', null=True, blank=True)
+    permissions = models.ForeignKey(Permissions, on_delete=models.CASCADE)
     tags = GenericRelation(Tag, related_query_name='location_types')
 
     def __str__(self):
@@ -20,6 +24,16 @@ class LocationType(models.Model):
         Returns the url to access a particular instance of the model.
         """
         return reverse('atlas:location_type_detail', kwargs={'pk': self.id})
+
+    def is_prime(self):
+        """
+        Determines if this object is the prime object or a redacted copy.
+        :return: True if Prime. False if Redacted Copy.
+        """
+        if self.prime is None:
+            return True
+        else:
+            return False
 
 
 class Location(models.Model):
@@ -33,6 +47,9 @@ class Location(models.Model):
                                related_name='children',
                                blank=True,
                                null=True)
+
+    prime = models.ForeignKey('self', on_delete=models.CASCADE, related_name='redactions', null=True, blank=True)
+    permissions = models.ForeignKey(Permissions, on_delete=models.CASCADE)
     tags = GenericRelation(Tag, related_query_name='locations')
 
     def __str__(self):
@@ -44,4 +61,12 @@ class Location(models.Model):
         """
         return reverse('atlas:location_detail', kwargs={'pk': self.id})
 
-
+    def is_prime(self):
+        """
+        Determines if this object is the prime object or a redacted copy.
+        :return: True if Prime. False if Redacted Copy.
+        """
+        if self.prime is None:
+            return True
+        else:
+            return False

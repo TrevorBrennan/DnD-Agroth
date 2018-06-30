@@ -6,7 +6,15 @@ from details.admin import GenericTagInline
 
 class LocationAdmin(admin.ModelAdmin):
     model = Location
-    fields = ['name', 'type', 'parent']
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'type', 'parent')
+        }),
+        ('Permissions', {
+            'fields': ('prime', 'permissions')
+        }),
+    )
+
     list_display = ('name', 'type')
 
     inlines = [GenericTagInline]
@@ -14,7 +22,14 @@ class LocationAdmin(admin.ModelAdmin):
 
 class LocationTypeAdmin(admin.ModelAdmin):
     model = LocationType
-    fields = ['name']
+    fieldsets = (
+        (None, {
+            'fields': ('name',)
+        }),
+        ('Permissions', {
+            'fields': ('prime', 'permissions')
+        }),
+    )
 
     inlines = [GenericTagInline]
 
