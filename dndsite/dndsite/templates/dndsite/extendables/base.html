@@ -4,15 +4,15 @@
         <meta charset="UTF-8">
         <title>{% block title %}Title{% endblock %}</title>
 
-        {% include 'dndsite/stylesheets.html' %}
+        {% include 'dndsite/includables/stylesheets.html' %}
     </head>
     <body>
-        {% include 'dndsite/navbar.html' %}
+        {% include 'dndsite/includables/navbar.html' %}
         <div class="container">
         {% block content %}
         {% endblock %}
         </div>
 
-        {% include 'dndsite/javascripts.html' %}
+        {% include 'dndsite/includables/javascripts.html' %}
     </body>
 </html>

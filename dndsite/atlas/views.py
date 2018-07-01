@@ -11,7 +11,7 @@ from .models import Location, LocationType
 
 
 class IndexView(generic.ListView):
-    template_name = 'atlas/location_index.html'
+    template_name = 'atlas/pages/location_index.html'
     context_object_name = 'location_list'
 
     def get_queryset(self):
@@ -23,7 +23,7 @@ class IndexView(generic.ListView):
 
 
 class LocationTypeIndexView(generic.ListView):
-    template_name = 'atlas/location_type_index.html'
+    template_name = 'atlas/pages/location_type_index.html'
     context_object_name = 'location_types'
 
     def get_queryset(self):
@@ -36,7 +36,7 @@ class LocationTypeIndexView(generic.ListView):
 
 class LocationDetailView(generic.DetailView):
     model = Location
-    template_name = 'atlas/location_detail.html'
+    template_name = 'atlas/pages/location_detail.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -50,7 +50,7 @@ class LocationDetailView(generic.DetailView):
 
 class LocationTypeDetailView(generic.DetailView):
     model = LocationType
-    template_name = 'atlas/location_type_detail.html'
+    template_name = 'atlas/pages/location_type_detail.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

@@ -10,9 +10,11 @@
         </div>
         <div id="collapse{{ collection.label }}" class="collapse" aria-labelledby="{{ collection.label }}" data-parent="#details_accordion">
             {% for detail in collection.details %}
-                {% include 'details/detail.html' %}
+                {% include 'details/includables/detail.html' %}
             {% endfor %}
         </div>
     </div>
+    {% empty %}
+        <p>No Details Available</p>
     {% endfor %}
 </div>

@@ -16,9 +16,7 @@
                 <a class="nav-link disabled" href="#">{{ user}}</a>
             </li>
 
-
-            {% include 'authorization/nav_items.html' %}
-
+            {% include 'authorization/includables/nav_items.html' %}
 
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'logout' %}">Logout</a>

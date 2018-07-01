@@ -10,7 +10,7 @@
     <div class="card-footer">
         <div class="row">
             <div class="col-5">
-                Source:<a href="{% url 'details:source_detail' detail.source.id %}">{{ detail.source }}</a>
+                Source:<a href="{% url 'details:source_detail' detail.source.pk %}">{{ detail.source }}</a>
             </div>
             <div class="col-5">
                 Chapter: {{ detail.chapter }}
@@ -23,7 +23,7 @@
             <div class="col-12">
                 Tags:
                 {% for tag in detail.tags.all %}
-                    {% include 'details/tag_widget.html' %}
+                    {% include 'details/includables/tag.html' %}
                 {% endfor %}
             </div>
         </div>

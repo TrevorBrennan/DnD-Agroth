@@ -10,7 +10,7 @@ from .utils import DetailsContextHelper
 
 # Create your views here.
 class IndexView(generic.ListView):
-    template_name = 'details/index.html'
+    template_name = 'details/pages/source_index.html'
     context_object_name = 'source_list'
 
     def get_queryset(self):
@@ -27,7 +27,7 @@ class IndexView(generic.ListView):
 
 class SourceDetailView(generic.DetailView):
     model = Source
-    template_name = 'details/source.html'
+    template_name = 'details/pages/source_detail.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

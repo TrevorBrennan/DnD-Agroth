@@ -8,7 +8,7 @@ from authorization.utils import character_is_gm, exclude_redactions_from_queryse
 register = template.Library()
 
 
-@register.inclusion_tag('atlas/locations_table_widget.html', takes_context=True)
+@register.inclusion_tag('atlas/includables/locations_table.html', takes_context=True)
 def generate_parents_table(context):
     parents = []
     parent = context['location'].parent
@@ -20,7 +20,7 @@ def generate_parents_table(context):
     }
 
 
-@register.inclusion_tag('atlas/locations_table_widget.html', takes_context=True)
+@register.inclusion_tag('atlas/includables/locations_table.html', takes_context=True)
 def generate_children_table(context):
 
     request = context['request']

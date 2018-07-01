@@ -1,4 +1,4 @@
-{% extends "dndsite/base.html" %}
+{% extends "dndsite/extendables/base.html" %}
 {% load atlas_tags %}
 
 {% block title %}
@@ -28,6 +28,6 @@
     {% generate_children_table %}
 
 <h3>Details</h3>
-    {% include 'details/details_widget.html' %}
+    {% include 'details/includables/detail_collections.html' %}
 {% endif %}
 {% endblock %}
