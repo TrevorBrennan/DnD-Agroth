@@ -5,7 +5,7 @@ from django.utils import timezone
 from django.views import generic
 
 from authorization.utils import filter_queryset_for_permitted, set_permitted_instance
-from details.views import DetailHelpers
+from details.utils import DetailsContextHelper
 
 from .models import Location, LocationType
 
@@ -41,11 +41,11 @@ class LocationDetailView(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         if set_permitted_instance(context, self.request, 'location'):
-            self.set_details(context)
+            self.set_detail_collections(context)
         return context
 
-    def set_details(self, context):
-        DetailHelpers.set_detail_collections_from_object(self.request, context, 'location')
+    def set_detail_collections(self, context):
+        DetailsContextHelper.set_detail_collections_from_object(self.request, context, 'location')
 
 
 class LocationTypeDetailView(generic.DetailView):
@@ -56,11 +56,11 @@ class LocationTypeDetailView(generic.DetailView):
         context = super().get_context_data(**kwargs)
         if set_permitted_instance(context, self.request, 'locationtype'):
             self.rename_location_type(context)
-            self.set_details(context)
+            self.set_detail_collections(context)
         return context
 
     def rename_location_type(self, context):
         context['location_type'] = context['locationtype']
 
-    def set_details(self, context):
-        DetailHelpers.set_detail_collections_from_object(self.request, context, 'location_type')
+    def set_detail_collections(self, context):
+        DetailsContextHelper.set_detail_collections_from_object(self.request, context, 'location_type')
