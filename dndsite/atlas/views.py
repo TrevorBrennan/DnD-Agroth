@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.views import generic
 
+from authorization.utils import filter_queryset_for_permitted, set_permitted_instance
 from details.views import DetailHelpers
 
 from .models import Location, LocationType
@@ -17,9 +18,8 @@ class IndexView(generic.ListView):
         """
         Return a list of locations without parents
         """
-        return Location.objects.filter(
-            parent=None
-        )
+        locations = filter_queryset_for_permitted(Location.objects.filter(parent=None), self.request)
+        return locations
 
 
 class LocationTypeIndexView(generic.ListView):
@@ -30,31 +30,22 @@ class LocationTypeIndexView(generic.ListView):
         """
         Return a list of locations without parents
         """
-        return LocationType.objects.all()
+        location_types = filter_queryset_for_permitted(LocationType.objects.all(), self.request)
+        return location_types
 
 
 class LocationDetailView(generic.DetailView):
     model = Location
-    template_name = 'atlas/detail.html'
+    template_name = 'atlas/location_detail_page.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        self.set_parents(context)
-        self.set_details(context)
+        if set_permitted_instance(context, self.request, 'location'):
+            self.set_details(context)
         return context
 
-    def set_parents(self, context):
-        parents = []
-        parent = context['location'].parent
-        while parent is not None:
-            parents.append(parent)
-            parent = parent.parent
-        if len(parents) > 0:
-            context['parents'] = parents
-
     def set_details(self, context):
-        tags = context['location'].tags.all()
-        DetailHelpers.set_detail_collections_from_tags(self.request, context, tags)
+        DetailHelpers.set_detail_collections_from_object(self.request, context, 'location')
 
 
 class LocationTypeDetailView(generic.DetailView):
@@ -63,13 +54,13 @@ class LocationTypeDetailView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        self.set_location_type(context)
-        self.set_details(context)
+        if set_permitted_instance(context, self.request, 'locationtype'):
+            self.rename_location_type(context)
+            self.set_details(context)
         return context
 
-    def set_location_type(self, context):
+    def rename_location_type(self, context):
         context['location_type'] = context['locationtype']
 
     def set_details(self, context):
-        tags = context['location_type'].tags.all()
-        DetailHelpers.set_detail_collections_from_tags(self.request, context, tags)
+        DetailHelpers.set_detail_collections_from_object(self.request, context, 'location_type')

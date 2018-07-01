@@ -43,6 +43,15 @@ class SourceDetailView(generic.DetailView):
 class DetailHelpers:
 
     @staticmethod
+    def set_detail_collections_from_object(request, context, object_name):
+        instance = context[object_name]
+        if instance.prime is not None:
+            tags = instance.prime.tags.all()
+        else:
+            tags = instance.tags.all()
+        DetailHelpers.set_detail_collections_from_tags(request, context, tags)
+
+    @staticmethod
     def set_detail_collections_from_tags(request, context, tags):
         details = []
         for tag in tags:

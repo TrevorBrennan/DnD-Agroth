@@ -38,7 +38,7 @@ class Permissions(models.Model):
     def request_has_permissions(self, request):
 
         # Get the relevant values from the session
-        character_name = request.session.get('character', 'Guest')
+        character_name = request.session.get('character_name', 'Guest')
         campaign_pk = request.session.get('campaign_pk', Campaign())
 
         # Get the campaign object if the campaign_pk is valid. Otherwise,
