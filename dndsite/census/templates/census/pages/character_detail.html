@@ -1,0 +1,22 @@
+{% extends "dndsite/extendables/base.html" %}
+
+{% block title %}
+    {% if character == None %}
+        Page Not Found
+    {% else %}
+        {{ character.name }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if character == None %}
+        <h2>Page Not Found</h2>
+        <p>The page you are looking for doesn't seem to exist. Perhaps the Beholders have woken up.</p>
+    {% else %}
+        <h1>{{ character.name }}</h1>
+
+        <h3>Details</h3>
+        {% include 'details/includables/detail_collections.html' %}
+
+    {% endif %}
+{% endblock %}

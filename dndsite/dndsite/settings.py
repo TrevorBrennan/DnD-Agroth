@@ -36,6 +36,7 @@ MY_INSTALLED_APPS = [
     'polls.apps.PollsConfig',
     'details.apps.DetailsConfig',
     'atlas.apps.AtlasConfig',
+    'census.apps.CensusConfig',
 ]
 
 DEFAULT_INSTALLED_APPS = [
