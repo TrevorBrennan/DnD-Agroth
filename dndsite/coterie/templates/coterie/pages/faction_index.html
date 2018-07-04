@@ -1,0 +1,19 @@
+{% extends "dndsite/extendables/base.html" %}
+
+{% block title %}
+Coterie
+{% endblock %}
+
+{% block content %}
+
+<h1>Factions Home</h1>
+<lead>Select any of the factions below to begin familiarizing yourself with potential allies and rivals.</lead>
+<ul>
+{% for faction in faction_list %}
+<li><a href="{% url 'coterie:faction_detail' faction.id %}">{{ faction }}</a></li>
+{% empty %}
+    <p>No one seems to have met yet...</p>
+{% endfor %}
+</ul>
+
+{% endblock %}
