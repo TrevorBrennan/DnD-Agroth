@@ -1,11 +1,14 @@
 {% extends "dndsite/extendables/base.html" %}
 
+
 {% block title %}
-{{ location_type.name }}
+    {{ location_type.name }}
 {% endblock %}
 
+
 {% block content %}
-<h1>{{ location_type.name }}</h1>
-<h3>Details</h3>
+    <h1>{{ location_type.name }}</h1>
+
+    <h3>Details</h3>
     {% include 'details/includables/detail_collections.html' %}
 {% endblock %}

@@ -1,15 +1,13 @@
 {% extends "dndsite/extendables/base.html" %}
 
 {% block title %}
-{{ source.name }}
+    {{ source.name }}
 {% endblock %}
 
+
 {% block content %}
+    <h1>{{ source.name }}</h1>
 
-<h1>{{ source.name }}</h1>
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-
-<h3>Details</h3>
+    <h3>Details</h3>
     {% include 'details/includables/detail_collections.html' %}
-
 {% endblock %}

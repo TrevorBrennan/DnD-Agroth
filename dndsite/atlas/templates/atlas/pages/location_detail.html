@@ -1,33 +1,26 @@
 {% extends "dndsite/extendables/base.html" %}
+
 {% load atlas_tags %}
 
+
 {% block title %}
-{% if location == None %}
-    Page Not Found
-{% else %}
     {{ location.name }}
-{% endif %}
 {% endblock %}
 
-{% block content %}
-{% if location == None %}
-<h2>Page Not Found</h2>
-<p>The page you are looking for doesn't seem to exist. Perhaps the Beholders have woken up.</p>
-{% else %}
-<h1>{{ location.name }}</h1>
-<p class="lead"> Type: <a href="{{ location.type.get_absolute_url }}">{{ location.type }}</a></p>
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-<h3>Parents</h3>
-<p>Below is a table listing all the regions or locations that contain this one, starting from the biggest.</p>
+{% block content %}
+    <h1>{{ location.name }}</h1>
+    <p class="lead"> Type: <a href="{{ location.type.get_absolute_url }}">{{ location.type }}</a></p>
+
+    <h3>Parents</h3>
+    <p>Below is a table listing all the regions or locations that contain this one, starting from the biggest.</p>
     {% generate_parents_table %}
 
 
-<h3>Children</h3>
-<p>Below is a table listing all the next largest regions or locations that comprise this one. </p>
+    <h3>Children</h3>
+    <p>Below is a table listing all the next largest regions or locations that comprise this one. </p>
     {% generate_children_table %}
 
-<h3>Details</h3>
+    <h3>Details</h3>
     {% include 'details/includables/detail_collections.html' %}
-{% endif %}
 {% endblock %}

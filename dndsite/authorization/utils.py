@@ -1,3 +1,5 @@
+from django.http import Http404
+
 from authorization.models import Campaign, PlayerCharacter
 
 
@@ -35,8 +37,7 @@ def set_permitted_instance(context, request, object_name):
                 return True
         else:
             context[object_name] = None
-            return False
-
+            raise Http404
 
 
 def character_is_gm(context, request=None):
