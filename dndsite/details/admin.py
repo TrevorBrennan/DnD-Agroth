@@ -12,6 +12,7 @@ class ChapterAdmin(admin.ModelAdmin):
 class DetailAdmin(admin.ModelAdmin):
     model = Tag
     fields = ['detail_text', 'source', 'chapter', 'tags', 'permissions']
+    filter_horizontal = ['tags']
 
 
 class DetailInline(admin.TabularInline):
