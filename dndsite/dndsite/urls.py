@@ -24,6 +24,7 @@ urlpatterns = [
     path('atlas/', include('atlas.urls')),
     path('census/', include('census.urls')),
     path('coterie/', include('coterie.urls')),
+    path('endeavours/', include('endeavours.urls')),
     path('admin/', admin.site.urls),
     path('account/', include('django.contrib.auth.urls')),
     path('authorization/', include('authorization.urls')),

@@ -1,0 +1,13 @@
+{% extends "dndsite/extendables/base.html" %}
+
+{% block title %}
+    {{ quest.name }}
+{% endblock %}
+
+
+{% block content %}
+    <h1>{{ quest.name }}</h1>
+
+    <h3>Details</h3>
+    {% include 'details/includables/detail_collections.html' %}
+{% endblock %}

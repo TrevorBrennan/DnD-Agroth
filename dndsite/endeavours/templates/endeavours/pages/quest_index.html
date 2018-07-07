@@ -1,0 +1,19 @@
+{% extends "dndsite/extendables/base.html" %}
+
+
+{% block title %}
+    Endeavours
+{% endblock %}
+
+
+{% block content %}
+    <h1>Endeavours Home</h1>
+    <lead>Select any of the Quests below to see all that has been accomplished.</lead>
+    <ul>
+        {% for quest in quest_list %}
+            <li><a href="{% url 'endeavours:quest_detail' quest.id %}">{{ quest }}</a></li>
+        {% empty %}
+            <p>Haven't done much, have you...</p>
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -38,6 +38,7 @@ MY_INSTALLED_APPS = [
     'atlas.apps.AtlasConfig',
     'census.apps.CensusConfig',
     'coterie.apps.CoterieConfig',
+    'endeavours.apps.EndeavoursConfig',
 ]
 
 DEFAULT_INSTALLED_APPS = [
