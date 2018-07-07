@@ -16,8 +16,8 @@ class FactionIndexView(generic.ListView):
         """
         Return a list of locations without parents
         """
-        characters = filter_queryset_for_permitted(Faction.objects.all(), self.request)
-        return characters
+        factions = filter_queryset_for_permitted(Faction.objects.all(), self.request)
+        return factions
 
 
 class FactionDetailView(generic.DetailView):
