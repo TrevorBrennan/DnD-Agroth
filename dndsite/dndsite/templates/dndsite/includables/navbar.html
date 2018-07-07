@@ -9,6 +9,7 @@
             {% for  nav_template in nav_templates %}
                 {% include nav_template %}
             {% endfor %}
+            {% include 'details/includables/nav_items.html' %}
         </ul>
         <ul class="navbar-nav ml-auto">
             {% if user.is_authenticated %}
