@@ -91,8 +91,12 @@ WSGI_APPLICATION = 'dndsite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'database', 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'lore',
+        'USER': os.environ['LORE_POSTGRES_USERNAME'],
+        'PASSWORD': os.environ['LORE_POSTGRES_PASSWORD'],
+        'HOST': 'lore-default.cvwm1z1pfel5.us-east-1.rds.amazonaws.com',
+        'PORT': '5432',
     }
 }
 

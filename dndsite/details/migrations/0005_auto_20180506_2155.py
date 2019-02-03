@@ -11,6 +11,16 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        migrations.AlterField(
+            model_name='tag',
+            name='source',
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='details', to='details.Source', db_index=False),
+        ),
+        migrations.AlterField(
+            model_name='tag',
+            name='source',
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='details', to='details.Source'),
+        ),
         migrations.CreateModel(
             name='Detail',
             fields=[
