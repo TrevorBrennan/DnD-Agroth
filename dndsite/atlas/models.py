@@ -47,7 +47,6 @@ class Location(models.Model):
                                related_name='children',
                                blank=True,
                                null=True)
-
     prime = models.ForeignKey('self', on_delete=models.CASCADE, related_name='redactions', null=True, blank=True)
     permissions = models.ForeignKey(Permissions, on_delete=models.CASCADE)
     tags = GenericRelation(Tag, related_query_name='locations')
