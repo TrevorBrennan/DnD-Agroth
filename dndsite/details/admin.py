@@ -1,19 +1,38 @@
 from django.contrib import admin
 from django.contrib.contenttypes.admin import GenericTabularInline
+from django.utils.safestring import mark_safe
+from django.urls import reverse
 
 from .models import Chapter, Detail, Relation, RelationMember
 from .models import RelationMemberType, RelationType, Source, Tag
 
 
-class ChapterAdmin(admin.ModelAdmin):
-    model = Chapter
-    fields = ['name', 'source', 'permissions']
+# Helper Classes
 
 
-class DetailAdmin(admin.ModelAdmin):
+class EditLinkToInlineObject(object):
+
+    def edit_link(self, instance):
+        url = reverse('admin:{0}_{1}_change'.format(
+            instance._meta.app_label, instance._meta.model_name),
+            args=[instance.pk])
+
+        if instance.pk:
+            return mark_safe(u'<a href="{u}">edit</a>'.format(u=url))
+        else:
+            return ''
+
+
+# Generic Inline Classes
+
+
+class GenericTagInline(EditLinkToInlineObject, GenericTabularInline):
     model = Tag
-    fields = ['detail_text', 'source', 'chapter', 'tags', 'permissions']
-    filter_horizontal = ['tags']
+    extra = 1
+    readonly_fields = ('edit_link',)
+
+
+# Inline Classes
 
 
 class DetailInline(admin.TabularInline):
@@ -26,18 +45,9 @@ class DetailTagInline(admin.TabularInline):
     extra = 1
 
 
-class SourceAdmin(admin.ModelAdmin):
-    model = Source
-    fields = ['name', 'permissions']
-
-    inlines = [DetailInline]
-
-
-class TagAdmin(admin.ModelAdmin):
-    model = Tag
-    fields = ['detail_text', 'source']
-
-    inlines = [DetailTagInline]
+class RelationMemberInline(admin.TabularInline):
+    model = RelationMember
+    extra = 1
 
 
 class TagInline(admin.TabularInline):
@@ -45,23 +55,18 @@ class TagInline(admin.TabularInline):
     extra = 1
 
 
-class GenericTagInline(GenericTabularInline):
+# Admin Classes
+
+
+class ChapterAdmin(admin.ModelAdmin):
+    model = Chapter
+    fields = ['name', 'source', 'permissions']
+
+
+class DetailAdmin(admin.ModelAdmin):
     model = Tag
-    extra = 1
-
-
-class RelationMemberTypeAdmin(admin.ModelAdmin):
-    model = RelationMemberType
-    fieldsets = (
-        (None, {
-            'fields': ('name',)
-        }),
-        ('Permissions', {
-            'fields': ('permissions',)
-        }),
-    )
-
-    inlines = [GenericTagInline]
+    fields = ['detail_text', 'source', 'chapter', 'tags', 'permissions']
+    filter_horizontal = ['tags']
 
 
 class RelationMemberAdmin(admin.ModelAdmin):
@@ -76,8 +81,8 @@ class RelationMemberAdmin(admin.ModelAdmin):
     )
 
 
-class RelationTypeAdmin(admin.ModelAdmin):
-    model = RelationType
+class RelationMemberTypeAdmin(admin.ModelAdmin):
+    model = RelationMemberType
     fieldsets = (
         (None, {
             'fields': ('name',)
@@ -102,6 +107,45 @@ class RelationAdmin(admin.ModelAdmin):
     )
 
     inlines = [GenericTagInline]
+    filter_horizontal = ['members']
+
+
+class RelationTypeAdmin(admin.ModelAdmin):
+    model = RelationType
+    fieldsets = (
+        (None, {
+            'fields': ('name',)
+        }),
+        ('Permissions', {
+            'fields': ('permissions',)
+        }),
+    )
+
+    inlines = [GenericTagInline]
+
+
+class SourceAdmin(admin.ModelAdmin):
+    model = Source
+    fields = ['name', 'permissions']
+
+    inlines = [DetailInline]
+
+
+class TagAdmin(admin.ModelAdmin):
+    model = Tag
+    fieldsets = (
+        (None, {
+            'fields': ('pattern',)
+        }),
+        ('Permissions', {
+            'fields': ('permissions',)
+        }),
+    )
+
+    inlines = [DetailTagInline, RelationMemberInline]
+
+
+# Admin Class Registration
 
 
 admin.site.register(Chapter, ChapterAdmin)

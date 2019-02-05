@@ -31,6 +31,8 @@ class Tag(models.Model):
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
 
+    permissions = models.ForeignKey(Permissions, on_delete=models.CASCADE, null=True)
+
     def __str__(self):
         return self.content_object.__str__()
 
@@ -46,7 +48,7 @@ class RelationMemberType(models.Model):
 
 
 class RelationMember(models.Model):
-    member = models.ForeignKey(Tag, on_delete=models.CASCADE)
+    member = models.ForeignKey(Tag, on_delete=models.CASCADE, related_name='relation_members')
     type = models.ForeignKey(RelationMemberType, on_delete=models.CASCADE)
 
     permissions = models.ForeignKey(Permissions, on_delete=models.CASCADE)
