@@ -1,16 +1,12 @@
 {% extends "dndsite/extendables/base.html" %}
 
-{% load atlas_tags %}
-
-
 {% block title %}
-    {{ location.name }}
+    Relationship
 {% endblock %}
 
 
 {% block content %}
-    <h1>{{ location.name }}</h1>
-    <p class="lead"> Type: <a href="{{ location.type.get_absolute_url }}">{{ location.type }}</a></p>
+    <h1>Relationship</h1>
 
     <h3>Parents</h3>
     <p>Below is a table listing all the regions or locations that contain this one, starting from the biggest.</p>
@@ -20,9 +16,6 @@
     <h3>Children</h3>
     <p>Below is a table listing all the next largest regions or locations that comprise this one. </p>
     {% generate_children_table %}
-
-    <h3>Relations</h3>
-    {% include 'details/includables/relation_collections.html' %}
 
     <h3>Details</h3>
     {% include 'details/includables/detail_collections.html' %}

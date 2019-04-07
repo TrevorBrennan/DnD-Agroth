@@ -1,0 +1,20 @@
+<div id="relations_accordion">
+    {% for relation in relation_collections %}
+    <div class="card">
+        <div class="card-header" id="{{ relation.label }}" >
+            <h5 class="mb-0">
+               <button class="btn btn-link" data-toggle="collapse" data-target="#collapse{{ relation.label }}" aria-expanded="false" aria-controls="#collapse{{ relation.label }}">
+                   {{ relation.relation_type }} of:
+               </button>
+            </h5>
+        </div>
+        <div id="collapse{{ relation.label }}" class="collapse" aria-labelledby="{{ relation.label }}" data-parent="#relations_accordion">
+            {% for relation_info in relation.relation_infos %}
+                {% include 'details/includables/relation.html' %}
+            {% endfor %}
+        </div>
+    </div>
+    {% empty %}
+        <p>No Relations Available</p>
+    {% endfor %}
+</div>

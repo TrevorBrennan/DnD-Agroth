@@ -1,0 +1,13 @@
+<div class="card-body">
+    <p>
+        <a class="" data-toggle="collapse" href="#MemberMeta{{ relation_info.relation.pk }}" aria-expanded="false" aria-controls="MemberMeta{{ relation_info.relation.pk }}">
+            <i class="fas fa-angle-down"></i>
+        </a>
+        <a href="{{ relation_info.other.member.content_object.get_absolute_url }}">{{ relation_info.other }}</a>
+    </p>
+</div>
+<div class="collapse" id="RelationMeta{{ relation_info.relation.pk }}">
+    <div class="card-footer">
+        Eventual Location Of Relation Meta Data.
+    </div>
+</div>

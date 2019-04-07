@@ -9,6 +9,9 @@
 {% block content %}
     <h1>{{ character.name }}</h1>
 
+    <h3>Relations</h3>
+    {% include 'details/includables/relation_collections.html' %}
+
     <h3>Details</h3>
     {% include 'details/includables/detail_collections.html' %}
 {% endblock %}

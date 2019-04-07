@@ -5,12 +5,17 @@ from operator import itemgetter
 class DetailsContextHelper:
 
     @staticmethod
-    def set_detail_collections_from_object(request, context, object_name):
+    def get_tags_from_object(context, object_name):
         instance = context[object_name]
         if instance.prime is not None:
             tags = instance.prime.tags.all()
         else:
             tags = instance.tags.all()
+        return tags
+
+    @staticmethod
+    def set_detail_collections_from_object(request, context, object_name):
+        tags = DetailsContextHelper.get_tags_from_object(context, object_name)
         DetailsContextHelper.set_detail_collections_from_tags(request, context, tags)
 
     @staticmethod
@@ -55,3 +60,40 @@ class DetailsContextHelper:
                                        'details': value})
         detail_collections = sorted(detail_collections, key=itemgetter('name'))
         context['detail_collections'] = detail_collections
+
+    @staticmethod
+    def set_relation_collections_from_object(request, context, object_name):
+        tags = DetailsContextHelper.get_tags_from_object(context, object_name)
+        DetailsContextHelper.set_relation_collections_from_tags(request, context, tags)
+
+
+    @staticmethod
+    def set_relation_collections_from_tags(request, context, tags):
+        relation_members = []
+        for tag in tags:
+            relation_members.extend(tag.relation_members.all())
+        DetailsContextHelper.set_relation_collections(request, context, relation_members)
+
+
+    @staticmethod
+    def set_relation_collections(request, context, relation_members):
+        cards = defaultdict(list)
+        relation_collections = []
+        for relation_member in relation_members:
+            if relation_member.permissions.request_has_permissions(request):
+                for relation in relation_member.relations.all():
+                    if relation.permissions.request_has_permissions(request):
+                        # Get the other relation member here so it is available in context
+                        relation_info = {'other': relation.other_member(relation_member),
+                                         'relation': relation}
+                        cards[relation_member].append(relation_info)
+        for key, value in cards.items():
+
+            relation_collections.append({'label': key.pk,
+                                         'relation_type': key.type.name,
+                                         'relation_infos': value})
+        relation_collections = sorted(relation_collections, key=itemgetter('relation_type'))
+        context['relation_collections'] = relation_collections
+
+
+

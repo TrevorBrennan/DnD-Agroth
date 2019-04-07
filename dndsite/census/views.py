@@ -28,7 +28,11 @@ class CharacterDetailView(generic.DetailView):
         context = super().get_context_data(**kwargs)
         if set_permitted_instance(context, self.request, 'character'):
             self.set_detail_collections(context)
+            self.set_relation_collections(context)
         return context
 
     def set_detail_collections(self, context):
         DetailsContextHelper.set_detail_collections_from_object(self.request, context, 'character')
+
+    def set_relation_collections(self, context):
+        DetailsContextHelper.set_relation_collections_from_object(self.request, context, 'character')

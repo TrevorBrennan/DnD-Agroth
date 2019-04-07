@@ -77,6 +77,9 @@ class Relation(models.Model):
     def __str__(self):
         return " - ".join(x.__str__() for x in self.members.all())
 
+    def other_member(self, member):
+        return self.members.exclude(pk=member.pk)[:1].get()
+
 
 class Detail(models.Model):
     detail_text = models.TextField()
