@@ -95,8 +95,8 @@ DATABASES = {
         'NAME': 'lore',
         'USER': os.environ['LORE_POSTGRES_USERNAME'],
         'PASSWORD': os.environ['LORE_POSTGRES_PASSWORD'],
-        'HOST': 'lore-default.cvwm1z1pfel5.us-east-1.rds.amazonaws.com',
-        'PORT': '5432',
+        'HOST': 'localhost',
+        'PORT': '5433',
     }
 }
 
