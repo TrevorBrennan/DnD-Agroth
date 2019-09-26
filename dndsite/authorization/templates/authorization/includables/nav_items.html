@@ -1,25 +1,27 @@
 {% load authorization_tags %}
 <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        {% if request.session.campaign_name == None %}
-            Select Campaign
-        {% else %}
-            {{ request.session.campaign_name }}
-        {% endif %}
+        {% firstof request.session.campaign_name 'Select Campaign' %}
     </a>
     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
         {% generate_nav_campaigns_list %}
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item disabled" href="#">Create New Campaign</a>
+        {% if request.session.campaign_name %}
+            <a class="dropdown-item disabled" href="#">Campaign Info</a>
+        {% endif %}
     </div>
 </li>
 <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        {% if request.session.character_name == None %}
-            Guest
-        {% else %}
-            {{ request.session.character_name }}
-        {% endif %}
+        {% firstof request.session.character_name 'Guest' %}
     </a>
     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
         {% generate_nav_characters_list %}
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item disabled" href="#">Create New Character</a>
+        {% if request.session.campaign_name %}
+            <a class="dropdown-item disabled" href="#">Character Info</a>
+        {% endif %}
     </div>
 </li>
