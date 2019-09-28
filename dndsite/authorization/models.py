@@ -25,11 +25,16 @@ class Campaign(models.Model):
 
 class Permissions(models.Model):
 
+    name = models.CharField(max_length=256, null=True, blank=True)
     gm_only = models.BooleanField(default=True)
     authorized_characters = models.ManyToManyField(PlayerCharacter, blank=True)
     campaigns = models.ManyToManyField(Campaign, blank=True)
 
     def __str__(self):
+        return self.name or self.permission_description
+
+    @property
+    def permission_description(self):
         output = "[{}], [{}]".format(", ".join(self.campaigns.values_list('name', flat=True)), ", ".join(self.authorized_characters.values_list('name', flat=True)))
         if self.gm_only:
             output = "(GM Only) {}".format(output)
