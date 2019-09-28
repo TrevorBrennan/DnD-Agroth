@@ -1,0 +1,24 @@
+{% extends "dndsite/extendables/base.html" %}
+
+{% load authorization_tags %}
+
+
+{% block title %}
+    Permissions Form
+{% endblock %}
+
+
+{% block content %}
+    {{ form.media }}
+
+    <h2>Permissions Form</h2>
+
+    <form method="post" id="permissionsForm" novalidate>
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+        </table>
+        <button type="submit">Save</button>
+        <a href="{% url 'home' %}">Cancel</a>
+    </form>
+{% endblock %}

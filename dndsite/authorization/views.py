@@ -1,7 +1,26 @@
 from django.shortcuts import render, redirect
-from .models import Campaign, PlayerCharacter
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, UpdateView
+
+from .forms import PermissionsForm
+from .models import Campaign, Permissions, PlayerCharacter
+
 
 # Create your views here.
+
+
+class PermissionsCreateView(CreateView):
+    model = Permissions
+    form_class = PermissionsForm
+    template_name = 'authorization/pages/permissions_form.html'
+    success_url = reverse_lazy('home')
+
+
+class PermissionsUpdateView(UpdateView):
+    model = Permissions
+    form_class = PermissionsForm
+    template_name = 'authorization/pages/permissions_form.html'
+    success_url = reverse_lazy('home')
 
 
 def set_character(request, pk):
