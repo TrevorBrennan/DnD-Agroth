@@ -38,7 +38,7 @@ class Permissions(models.Model):
     def request_has_permissions(self, request):
 
         # Get the relevant values from the session
-        character_name = request.session.get('character_name', 'Guest')
+        character_pk = request.session.get('character_pk', PlayerCharacter())
         campaign_pk = request.session.get('campaign_pk', Campaign())
 
         # Get the campaign object if the campaign_pk is valid. Otherwise,
@@ -54,7 +54,7 @@ class Permissions(models.Model):
         # Get the character object if the character name matches a name of a
         # character in the campaign. Otherwise, return false.
         try:
-            character = PlayerCharacter.objects.get(name=character_name, campaigns=campaign)
+            character = PlayerCharacter.objects.get(pk=character_pk)
         except PlayerCharacter.DoesNotExist:
             return False
 
