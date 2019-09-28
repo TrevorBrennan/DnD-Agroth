@@ -14,7 +14,7 @@
         <ul class="navbar-nav ml-auto">
             {% if user.is_authenticated %}
             <li class="nav-item">
-                <a class="nav-link disabled" href="#">{{ user}}</a>
+                <a class="nav-link disabled" href="#">{{ user }}</a>
             </li>
 
             {% include 'authorization/includables/nav_items.html' %}
