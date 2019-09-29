@@ -20,8 +20,8 @@
         {% generate_nav_characters_list %}
         <div class="dropdown-divider"></div>
         <a class="dropdown-item disabled" href="#">Create New Character</a>
-        {% if request.session.campaign_name %}
-            <a class="dropdown-item disabled" href="#">Character Info</a>
+        {% if request.session.character_pk %}
+            <a class="dropdown-item" href="{% url 'authorization:character_detail' request.session.character_pk %}">Character Info</a>
         {% endif %}
     </div>
 </li>

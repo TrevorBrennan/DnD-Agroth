@@ -1,0 +1,22 @@
+{% extends "dndsite/extendables/base.html" %}
+
+{% load authorization_tags %}
+
+
+{% block title %}
+    {{ playercharacter.name }}
+{% endblock %}
+
+
+{% block content %}
+    <h2>{{ playercharacter.name }}</h2>
+    <p class="lead">Played by: <a href="">{{ playercharacter.player }}</a></p>
+
+    <h3>Campaigns</h3>
+    {% for campaign in playercharacter.campaigns.all %}
+        <p>{{ campaign.name }}</p>
+    {% empty %}
+    <p>No Campaigns joined yet.</p>
+{% endfor %}
+
+{% endblock %}
