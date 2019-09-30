@@ -1,0 +1,23 @@
+{% extends "dndsite/extendables/base.html" %}
+
+{% load authorization_tags %}
+
+
+{% block title %}
+    {{ campaign.name }}
+{% endblock %}
+
+
+{% block content %}
+    <h2>{{ campaign.name }}</h2>
+    <p class="lead">GM: <a href="{% url 'authorization:character_detail' campaign.gm.pk %}">{{ campaign.gm }}</a></p>
+
+    <h3>Player Characters</h3>
+
+    {% for player in campaign.players.all %}
+        <p><a href="{% url 'authorization:character_detail' player.pk %}">{{ player.name }}</a></p>
+    {% empty %}
+        <p>No characters joined yet.</p>
+    {% endfor %}
+
+{% endblock %}

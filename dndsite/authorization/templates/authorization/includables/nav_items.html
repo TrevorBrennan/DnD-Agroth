@@ -8,7 +8,7 @@
         <div class="dropdown-divider"></div>
         <a class="dropdown-item disabled" href="#">Create New Campaign</a>
         {% if request.session.campaign_name %}
-            <a class="dropdown-item disabled" href="#">Campaign Info</a>
+            <a class="dropdown-item" href="{% url 'authorization:campaign_detail' request.session.campaign_pk %}">Campaign Info</a>
         {% endif %}
     </div>
 </li>

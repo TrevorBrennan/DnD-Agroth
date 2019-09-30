@@ -14,9 +14,9 @@
 
     <h3>Campaigns</h3>
     {% for campaign in playercharacter.campaigns.all %}
-        <p>{{ campaign.name }}</p>
+        <p><a href="{% url 'authorization:campaign_detail' campaign.pk %}">{{ campaign.name }}</a></p>
     {% empty %}
-    <p>No Campaigns joined yet.</p>
-{% endfor %}
+        <p>No Campaigns joined yet.</p>
+    {% endfor %}
 
 {% endblock %}

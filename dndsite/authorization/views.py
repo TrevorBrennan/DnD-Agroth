@@ -8,7 +8,12 @@ from .models import Campaign, Permissions, PlayerCharacter
 
 # Create your views here.
 
-class CharacterDetailView(DetailView):
+class CampaignDetailView(DetailView):
+    model = Campaign
+    template_name = 'authorization/pages/campaign_detail.html'
+
+
+class PlayerCharacterDetailView(DetailView):
     model = PlayerCharacter
     template_name = 'authorization/pages/player_character_detail.html'
 
