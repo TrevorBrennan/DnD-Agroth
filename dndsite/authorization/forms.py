@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.admin.widgets import FilteredSelectMultiple
 
-from .models import Permissions
+from .models import Permissions, PlayerCharacter
 from dndsite import settings
 
 
@@ -21,3 +21,10 @@ class PermissionsForm(forms.ModelForm):
             'authorized_characters': FilteredSelectMultiple('Characters', is_stacked=False),
             'campaigns': FilteredSelectMultiple('Campaigns', is_stacked=False)
         }
+
+
+class PlayerCharacterForm(forms.ModelForm):
+
+    class Meta:
+        model = PlayerCharacter
+        fields = ['name']

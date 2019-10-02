@@ -1,8 +1,9 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, UpdateView
 
-from .forms import PermissionsForm
+from .forms import PermissionsForm, PlayerCharacterForm
 from .models import Campaign, Permissions, PlayerCharacter
 
 
@@ -18,14 +19,25 @@ class PlayerCharacterDetailView(DetailView):
     template_name = 'authorization/pages/player_character_detail.html'
 
 
-class PermissionsCreateView(CreateView):
+class PlayerCharacterCreateView(LoginRequiredMixin, CreateView):
+    model = PlayerCharacter
+    form_class = PlayerCharacterForm
+    template_name = 'authorization/pages/player_character_form.html'
+    success_url = reverse_lazy('home')
+
+    def form_valid(self, form):
+        form.instance.player = self.request.user
+        return super().form_valid(form)
+
+
+class PermissionsCreateView(LoginRequiredMixin, CreateView):
     model = Permissions
     form_class = PermissionsForm
     template_name = 'authorization/pages/permissions_form.html'
     success_url = reverse_lazy('home')
 
 
-class PermissionsUpdateView(UpdateView):
+class PermissionsUpdateView(LoginRequiredMixin, UpdateView):
     model = Permissions
     form_class = PermissionsForm
     template_name = 'authorization/pages/permissions_form.html'
