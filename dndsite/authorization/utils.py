@@ -44,11 +44,11 @@ def character_is_gm(context, request=None):
     request = request or context['request']
     campaign = Campaign.objects.get(pk=request.session.get('campaign_pk', None))
     character = PlayerCharacter.objects.get(pk=request.session.get('character_pk', None))
-    return campaign.gm == character
+    player = character.player
+    return campaign.gm == player
 
 
 def user_is_gm(context):
     request = context['request']
     campaign = Campaign.objects.get(pk=request.session.get('campaign_pk', None))
-    characters = PlayerCharacter.objects.filter(player=context['user'], campaigns__id=campaign.pk)
-    return campaign.gm in characters
+    return campaign.gm.pk == context['user'].pk

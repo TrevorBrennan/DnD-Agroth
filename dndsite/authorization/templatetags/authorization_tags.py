@@ -20,9 +20,10 @@ def generate_nav_characters_list(context):
         return {
             'characters': []
         }
-    characters = PlayerCharacter.objects.filter(player=context['user'], campaigns__id=campaign.pk)
-    if campaign.gm in characters:
+    if campaign.gm.pk == context['user'].pk:
         characters = PlayerCharacter.objects.filter(campaigns__id=campaign.pk)
+    else:
+        characters = PlayerCharacter.objects.filter(player=context['user'], campaigns__id=campaign.pk)
     return {
         'characters': characters,
     }
