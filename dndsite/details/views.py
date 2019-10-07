@@ -20,7 +20,7 @@ class IndexView(generic.ListView):
         all_sources = Source.objects.all()
         sources = all_sources
         for source in all_sources:
-            if not source.permissions.request_has_permissions(self.request):
+            if not source.permissions.request_has_view_permissions(self.request):
                 sources = sources.exclude(pk=source.pk)
         return sources
 

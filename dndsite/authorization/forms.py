@@ -23,9 +23,10 @@ class PermissionsForm(forms.ModelForm):
 
     class Meta:
         model = Permissions
-        fields = ['name', 'gm_only', 'authorized_characters', 'campaigns']
+        fields = ['name', 'viewers', 'editors', 'campaigns']
         widgets = {
-            'authorized_characters': FilteredSelectMultiple('Characters', is_stacked=False),
+            'viewers': FilteredSelectMultiple('Characters', is_stacked=False),
+            'editors': FilteredSelectMultiple('Characters', is_stacked=False),
             'campaigns': FilteredSelectMultiple('Campaigns', is_stacked=False)
         }
 

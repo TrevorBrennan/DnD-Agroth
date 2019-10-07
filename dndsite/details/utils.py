@@ -41,9 +41,9 @@ class DetailsContextHelper:
         cards = defaultdict(list)
         detail_collections = []
         for detail in details:
-            if detail.source is None or detail.source.permissions.request_has_permissions(request):
-                if detail.chapter is None or detail.chapter.permissions.request_has_permissions(request):
-                    if detail.permissions.request_has_permissions(request):
+            if detail.source is None or detail.source.permissions.request_has_view_permissions(request):
+                if detail.chapter is None or detail.chapter.permissions.request_has_view_permissions(request):
+                    if detail.permissions.request_has_view_permissions(request):
                         cards[(detail.source, detail.chapter)].append(detail)
         for key, value in cards.items():
             source, chapter = key
@@ -80,9 +80,9 @@ class DetailsContextHelper:
         cards = defaultdict(list)
         relation_collections = []
         for relation_member in relation_members:
-            if relation_member.permissions.request_has_permissions(request):
+            if relation_member.permissions.request_has_view_permissions(request):
                 for relation in relation_member.relations.all():
-                    if relation.permissions.request_has_permissions(request):
+                    if relation.permissions.request_has_view_permissions(request):
                         # Get the other relation member here so it is available in context
                         relation_info = {'other': relation.other_member(relation_member),
                                          'relation': relation}

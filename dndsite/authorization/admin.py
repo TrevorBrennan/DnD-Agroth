@@ -16,16 +16,16 @@ class CampaignAdmin(admin.ModelAdmin):
 
 class PermissionsAdmin(admin.ModelAdmin):
     model = Permissions
-    fields = ['name', 'gm_only', 'authorized_characters', 'campaigns']
-    filter_horizontal = ['authorized_characters', 'campaigns']
+    fields = ['name', 'viewers', 'editors', 'campaigns']
+    filter_horizontal = ['viewers', 'editors', 'campaigns']
 
-    list_display = ['name', 'gm_only', 'permission_description']
+    list_display = ['name', 'permission_description']
 
 
 class PermissionsInline(admin.TabularInline):
     model = Permissions
-    fields = ['name', 'gm_only', 'authorized_characters', 'campaigns']
-    filter_horizontal = ['authorized_characters', 'campaigns']
+    fields = ['name', 'viewers', 'editors', 'campaigns']
+    filter_horizontal = ['viewers', 'editors', 'campaigns']
     extra = 1
 
 

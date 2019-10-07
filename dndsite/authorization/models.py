@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 
+from dndsite.utils import get_user_from_request
+
 # Create your models here.
 
 
@@ -38,8 +40,8 @@ class Campaign(models.Model):
 class Permissions(models.Model):
 
     name = models.CharField(max_length=256, null=True, blank=True)
-    gm_only = models.BooleanField(default=True)
-    authorized_characters = models.ManyToManyField(PlayerCharacter, blank=True)
+    viewers = models.ManyToManyField(PlayerCharacter, related_name='view_permissions', blank=True)
+    editors = models.ManyToManyField(PlayerCharacter, related_name='edit_permissions', blank=True)
     campaigns = models.ManyToManyField(Campaign, blank=True)
 
     def __str__(self):
@@ -47,37 +49,26 @@ class Permissions(models.Model):
 
     @property
     def permission_description(self):
-        output = "[{}], [{}]".format(", ".join(self.campaigns.values_list('name', flat=True)), ", ".join(self.authorized_characters.values_list('name', flat=True)))
-        if self.gm_only:
-            output = "(GM Only) {}".format(output)
+        output = "[{}], [{}]".format(", ".join(self.campaigns.values_list('name', flat=True)), ", ".join(self.viewers.values_list('name', flat=True)))
         return output
 
-    def request_has_permissions(self, request):
+    def request_has_view_permissions(self, request):
 
         # Get the relevant values from the session
         character_pk = request.session.get('character_pk', PlayerCharacter())
         campaign_pk = request.session.get('campaign_pk', Campaign())
+        user = get_user_from_request(request)
 
         # Get the campaign object if the campaign_pk is valid. Otherwise,
         # return false.
-        try:
-            campaign = Campaign.objects.get(pk=campaign_pk)
-        except Campaign.DoesNotExist:
+        campaign = self.campaigns.filter(pk=campaign_pk).first()
+        if not campaign:
             return False
 
-        if campaign not in self.campaigns.all():
-            return False
+        # If there isn't a character set, False for players and True for GM
+        if not character_pk:
+            return campaign.gm == user
 
-        # Get the character object if the character name matches a name of a
-        # character in the campaign. Otherwise, return false.
-        try:
-            character = PlayerCharacter.objects.get(pk=character_pk)
-        except PlayerCharacter.DoesNotExist:
-            return False
-
-        if campaign.gm == character:
-            return True
-        elif not self.gm_only and character in self.authorized_characters.all():
-            return True
-        else:
-            return False
+        # True if the selected character is in the list of viewers
+        character = self.viewers.filter(pk=character_pk).first()
+        return bool(character)
