@@ -40,9 +40,9 @@ class Campaign(models.Model):
 class Permissions(models.Model):
 
     name = models.CharField(max_length=256, null=True, blank=True)
+    campaigns = models.ManyToManyField(Campaign, blank=True)
     viewers = models.ManyToManyField(PlayerCharacter, related_name='view_permissions', blank=True)
     editors = models.ManyToManyField(PlayerCharacter, related_name='edit_permissions', blank=True)
-    campaigns = models.ManyToManyField(Campaign, blank=True)
 
     def __str__(self):
         return self.name or self.permission_description
