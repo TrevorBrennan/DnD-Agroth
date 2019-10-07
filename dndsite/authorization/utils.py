@@ -1,7 +1,7 @@
 from django.http import Http404
 
-from authorization.models import Campaign, PlayerCharacter
-
+from .models import Campaign, PlayerCharacter
+from dndsite.utils import get_user_from_request
 
 def exclude_redactions_from_queryset(queryset):
     filtered_qs = queryset
@@ -27,7 +27,7 @@ def set_permitted_instance(context, request, object_name):
 
     if instance.permissions.request_has_view_permissions(request):
         context[object_name] = instance
-        if character_is_gm(context, request=request):
+        if user_as_gm(context, request=request):
             context['redactions'] = instance.redactions.all()
         return True
     else:
@@ -40,15 +40,25 @@ def set_permitted_instance(context, request, object_name):
             raise Http404
 
 
-def character_is_gm(context, request=None):
+def user_as_gm(context, request=None):
+    """
+    Identifies if the currently logged is user is acting as the GM of the
+    currently selected campaign. If the user is the GM, but has selected a
+    character, they are not acting as the GM.
+    """
+    request = request or context['request']
+    character_pk = request.session.get('character_pk', None)
+    if character_pk:
+        return False
+    else:
+        return user_is_gm(context, request)
+
+
+def user_is_gm(context, request=None):
+    """
+    Identifies if the currently logged in user is the GM of the currently
+    selected campaign.
+    """
     request = request or context['request']
     campaign = Campaign.objects.get(pk=request.session.get('campaign_pk', None))
-    character = PlayerCharacter.objects.get(pk=request.session.get('character_pk', None))
-    player = character.player
-    return campaign.gm == player
-
-
-def user_is_gm(context):
-    request = context['request']
-    campaign = Campaign.objects.get(pk=request.session.get('campaign_pk', None))
-    return campaign.gm.pk == context['user'].pk
+    return campaign.gm == get_user_from_request(request)
