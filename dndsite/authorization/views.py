@@ -3,31 +3,39 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, UpdateView
 
-from .forms import PermissionsForm, PlayerCharacterForm
+from .forms import CampaignForm, PermissionsForm, PlayerCharacterForm
 from .models import Campaign, Permissions, PlayerCharacter
 
 
 # Create your views here.
+class CampaignCreateView(LoginRequiredMixin, CreateView):
+    model = Campaign
+    form_class = CampaignForm
+    template_name = 'authorization/pages/campaign_form.html'
+
+    def form_valid(self, form):
+        form.instance.gm = self.request.user
+        return super().form_valid(form)
+
 
 class CampaignDetailView(DetailView):
     model = Campaign
     template_name = 'authorization/pages/campaign_detail.html'
 
 
-class PlayerCharacterDetailView(DetailView):
-    model = PlayerCharacter
-    template_name = 'authorization/pages/player_character_detail.html'
-
-
 class PlayerCharacterCreateView(LoginRequiredMixin, CreateView):
     model = PlayerCharacter
     form_class = PlayerCharacterForm
     template_name = 'authorization/pages/player_character_form.html'
-    success_url = reverse_lazy('home')
 
     def form_valid(self, form):
         form.instance.player = self.request.user
         return super().form_valid(form)
+
+
+class PlayerCharacterDetailView(DetailView):
+    model = PlayerCharacter
+    template_name = 'authorization/pages/player_character_detail.html'
 
 
 class PermissionsCreateView(LoginRequiredMixin, CreateView):

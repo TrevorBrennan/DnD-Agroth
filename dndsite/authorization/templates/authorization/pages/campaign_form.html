@@ -4,15 +4,15 @@
 
 
 {% block title %}
-    Player Character Create Form
+    Campaign Create Form
 {% endblock %}
 
 
 {% block content %}
 
-    <h2>Player Character Create Form</h2>
+    <h2>Campaign Create Form</h2>
 
-    <form method="post" id="playerCharacterForm" novalidate>
+    <form method="post" id="campaignForm" novalidate>
         {% csrf_token %}
         <table>
             {{ form.as_table }}

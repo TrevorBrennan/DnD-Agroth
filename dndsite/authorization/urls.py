@@ -6,6 +6,7 @@ app_name = 'authorization'
 urlpatterns = [
     # ex: /authorization/1
     path('campaign/<int:pk>', views.CampaignDetailView.as_view(), name='campaign_detail'),
+    path('campaign/add', views.CampaignCreateView.as_view(), name='campaign_create'),
     path('campaign/set_active/<int:pk>', views.set_campaign, name='set_campaign'),
     path('character/<int:pk>', views.PlayerCharacterDetailView.as_view(), name='character_detail'),
     path('character/add', views.PlayerCharacterCreateView.as_view(), name='character_create'),

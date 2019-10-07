@@ -1,5 +1,6 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
+from django.urls import reverse
 
 # Create your models here.
 
@@ -12,15 +13,26 @@ class PlayerCharacter(models.Model):
     def __str__(self):
         return "{} ({})".format(self.name, ", ".join(self.campaigns.values_list('name', flat=True)))
 
+    def get_absolute_url(self):
+        """
+        Returns the url to access a particular instance of the model.
+        """
+        return reverse('authorization:character_detail', kwargs={'pk': self.pk})
+
 
 class Campaign(models.Model):
     name = models.CharField(max_length=256)
-    gm = models.ForeignKey(PlayerCharacter, on_delete=models.CASCADE, related_name='campaigns_as_gm', null=True,
-                           blank=True)
+    gm = models.ForeignKey(User, on_delete=models.CASCADE, related_name='campaigns_as_gm', null=True, blank=True)
     players = models.ManyToManyField(PlayerCharacter, related_name='campaigns')
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        """
+        Returns the url to access a particular instance of the model.
+        """
+        return reverse('authorization:campaign_detail', kwargs={'pk': self.pk})
 
 
 class Permissions(models.Model):

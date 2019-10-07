@@ -1,8 +1,15 @@
 from django import forms
 from django.contrib.admin.widgets import FilteredSelectMultiple
 
-from .models import Permissions, PlayerCharacter
+from .models import Campaign, Permissions, PlayerCharacter
 from dndsite import settings
+
+
+class CampaignForm(forms.ModelForm):
+
+    class Meta:
+        model = Campaign
+        fields = ['name']
 
 
 class PermissionsForm(forms.ModelForm):
